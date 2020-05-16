@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>서울 미세먼지 현황</title>
+
+    <!-- jQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style type="text/css">
+        div.question-box {
+            margin: 10px 0 20px 0;
+        }
+    </style>
+
+    <script>
+        function q1() {
+            // 여기에 코드를 입력하세요
+            var mise_names = $('#names-q1')
+            mise_names.empty()
+            $.ajax({
+                type: "GET", // GET 방식으로 요청한다.
+                url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
+                data: {}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
+                success: function(response){ 
+                    let mise_list = response["RealtimeCityAir"]["row"]
+                    for (let i = 0; i < mise_list.length; i++) {
+                        let mise = mise_list[i]
+                        let gu_name = mise["MSRSTE_NM"]
+                        let gu_mise = mise["PM10"]
+                        let time_stamp = mise["MSRDT"]
+                        let warning = ''
+                        if (gu_mise > 70) {
+                            warning = 'class="danger"'
+                        }
+                        let temp_html = `<li ${warning}>${gu_name}: ${gu_mise} (${time_stamp})</li>`
+                        mise_names.append(temp_html)
+                    }
+                }
+            })
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>서울 미세먼지 현황</h1>
+
+    <hr />
+
+    <div class="question-box">
+        <h2>서울시 OpenAPI(실시간 미세먼지 상태) 이용</h2>
+        
+        <button onclick="q1()">업데이트</button>
+        <ul id="names-q1">
+            
+        </ul>
+    </div>
+</body>
+
+</html>

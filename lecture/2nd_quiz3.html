@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>따릉이 현황</title>
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style type="text/css">
+        div.question-box {
+            margin: 10px 0 20px 0;
+        }
+
+        table {
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            padding: 10px;
+            border: 1px solid;
+        }
+        .danger {
+            background-color: red;
+        }
+    </style>
+
+    <script>
+        function q1() {
+            // 여기에 코드를 입력하세요
+            let q1_table = $('#names-q1')
+            q1_table.empty()
+            $.ajax({
+                type: "GET", 
+                url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/bikeList/1/99",
+                data: {}, 
+                success: function(response) {
+                    let bikes = response["rentBikeStatus"]["row"]
+                    for (let i = 0; i < bikes.length; i++) {
+                        let bike = bikes[i]
+                        let bike_loc = bike["stationName"]
+                        let rack_count = bike["rackTotCnt"]
+                        let parked_bike = bike["parkingBikeTotCnt"]
+                        let lack_bikes = ''
+                        if (parked_bike < 5){
+                            lack_bikes = 'class="danger"'
+                        }
+                        let temp_html = `<tr ${lack_bikes}><td>${bike_loc}</td><td>${rack_count}</td><td>${parked_bike}</td></tr>`
+                        q1_table.append(temp_html)
+                    }
+                }
+            })
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>따릉이 현황</h1>
+
+    <hr />
+
+    <div class="question-box">
+        <h2>서울시 OpenAPI(실시간 따릉기 현황)</h2>
+        
+        <p><span class="danger">빨간색</span>은 따릉이 5개 미만인 곳</p>
+        <button onclick="q1()">업데이트</button>
+        <table>
+            <thead>
+                <tr>
+                    <td>거치대 위치</td>
+                    <td>거치대 수</td>
+                    <td>현재 거치된 따릉이 수</td>
+                </tr>
+            </thead>
+            <tbody id="names-q1">
+                <tr>
+                    <td>102. 망원역 1번출구 앞</td>
+                    <td>22</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>103. 망원역 2번출구 앞</td>
+                    <td>16</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>104. 합정역 1번출구 앞</td>
+                    <td>16</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

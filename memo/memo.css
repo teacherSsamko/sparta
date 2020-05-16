@@ -1,0 +1,18 @@
+body {
+    max-width: 700px;
+    margin: auto;
+}
+
+.jumbotron {
+    margin-top: 15px;
+}
+.posting-box {
+    width: 70%;
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 40px;
+    padding: 30px 40px;
+}
+#posting-box {
+    display: none;
+}
