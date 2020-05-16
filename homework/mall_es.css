@@ -1,3 +1,9 @@
+body {
+    padding-bottom: 2em;
+}
+table {
+    margin-top: 2.5em;
+}
 .title_item {
     font-size: 2em;
     font-family: 'Nanum Gothic', sans-serif;
@@ -6,4 +12,10 @@
 .customer {
     max-width: 500px;
     margin: auto;
+}
+.rate {
+    color: blue;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 1.3em;
 }
