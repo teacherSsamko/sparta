@@ -26,18 +26,21 @@
                 12인치. 에어
             </div>
             <div class="col-12 customer">
+                <div class="alert alert-danger" role="alert" id='order_fail' style="display: none;">
+                    
+                </div>
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">주문자 이름</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="이름" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id='customer_name' placeholder="이름" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">수량</label>
                     </div>
-                    <select class="custom-select" id="inputGroupSelect01">
+                    <select class="custom-select" id="order_count">
                     <option selected>--수량을 선택하세요--</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -48,25 +51,61 @@
                     <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">주소</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="주소" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="customer_addr" placeholder="주소" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">전화번호</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="전화번호" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="customer_phone" placeholder="전화번호" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
                 <div class="alert alert-primary" role="alert" id='order_success' style="display: none;">
                     주문이 완료되었습니다.
                 </div>
-                <button type="submit" class="btn btn-primary" id='order_btn' onclick="order()">주문하기</button>
+                
+                <button type="submit" class="btn btn-primary" id='order_btn' onclick="valid_form()">주문하기</button>
             </div>
         </div>
     </div>
     <script>
         function order() {
             document.getElementById('order_success').style.display = 'block'
+            $('#order_fail').hide()
+        }
+        function valid_form() {
+            let alert_msg = ''
+            let valid_result = false
+            while (valid_result == false) {
+                let customer_name = $('#customer_name').val()
+                if (customer_name == '') {
+                    alert_msg='이름을 입력해주세요'
+                    break
+                }
+                let order_count = $('#order_count').val()
+                if (isNaN(order_count)) {
+                    alert_msg = '수량을 입력해주세요'
+                    break
+                }
+                let customer_addr = $('#customer_addr').val()
+                if (customer_addr == '') {
+                    alert_msg = '주소를 입력해주세요'
+                    break
+                }
+                let customer_phone = $('#customer_phone').val()
+                if (customer_phone == '') {
+                    alert_msg = '연락처를 입력해주세요'
+                    break
+                }
+                valid_result = true
+            }
+            if (alert_msg != '') {
+                $('#order_fail').text(alert_msg)
+                $('#order_fail').show()
+                
+            } else {
+                order()
 
+            }
         }
     </script>
 </body>
