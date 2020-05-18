@@ -51,7 +51,7 @@
             <div class="col-12 rate" id="ex_rate">
                 환율: 
             </div>
-            <div class="col-12 customer">
+            <div class="col-12 customer" id='order-form'>
                 <div class="alert alert-danger" role="alert" id='order_fail' style="display: none;">
                     
                 </div>
@@ -67,7 +67,7 @@
                     <label class="input-group-text" for="inputGroupSelect01">수량</label>
                     </div>
                     <select class="custom-select" id="order_count">
-                    <option selected>--수량을 선택하세요--</option>
+                    <option value='0' selected>--수량을 선택하세요--</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -128,6 +128,13 @@
                 </tr>
             `
             $('#order_list').prepend(temp_url)
+            reset_form()
+        }
+        function reset_form() {
+            $('#customer_name').val('')
+            $('#order_count').val(0)
+            $('#customer_addr').val('')
+            $('#customer_phone').val('')
         }
         function valid_form() {
             let alert_msg = ''
@@ -139,7 +146,7 @@
                     break
                 }
                 let order_count = $('#order_count').val()
-                if (isNaN(order_count)) {
+                if (order_count == '0') {
                     alert_msg = '수량을 입력해주세요'
                     break
                 }
