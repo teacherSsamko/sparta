@@ -149,8 +149,12 @@
                     break
                 }
                 let customer_phone = $('#customer_phone').val()
+                var phone_rule = /^010-[0-9]{4}-[0-9]{4}$/
                 if (customer_phone == '') {
                     alert_msg = '연락처를 입력해주세요'
+                    break
+                } else if (!phone_rule.test(customer_phone)) {
+                    alert_msg = '010-0000-0000 형태로 입력해주세요'
                     break
                 }
                 valid_result = true
