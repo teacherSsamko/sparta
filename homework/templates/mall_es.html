@@ -101,7 +101,7 @@
                 <th scope="col">전화번호</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id='order_body'>
               <tr>
                 <td>이은섭</td>
                 <td>2</td>
@@ -112,6 +112,26 @@
         </table>
     </div>
     <script>
+        function order_listing(name, count, addr, phone) {
+            
+            
+            let temp_url = `
+                <tr>
+                    <td>${name}</td>
+                    <td>${count}</td>
+                    <td>${addr}</td>
+                    <td>${phone}</td>
+                </tr>
+            `
+            $('#order_list').prepend(temp_url)
+
+        }
+        function reset_form() {
+            $('#customer_name').val('')
+            $('#order_count').val(0)
+            $('#customer_addr').val('')
+            $('#customer_phone').val('')
+        }
         function order() {
             document.getElementById('order_success').style.display = 'block'
             $('#order_fail').hide()
@@ -119,22 +139,22 @@
             let order_count = $('#order_count').val()
             let customer_addr = $('#customer_addr').val()
             let customer_phone = $('#customer_phone').val()
-            let temp_url = `
-                <tr>
-                    <td>${customer_name}</td>
-                    <td>${order_count}</td>
-                    <td>${customer_addr}</td>
-                    <td>${customer_phone}</td>
-                </tr>
-            `
-            $('#order_list').prepend(temp_url)
+            
+            $.ajax({
+                type: 'POST',
+                url: '/order',
+                data: { 'customer_name':customer_name, 'order_count':order_count,
+                'customer_addr':customer_addr, 'customer_phone':customer_phone},
+                success: function(response) {
+                    if (response['result'] == 'success') {
+                        alert('주문완료!');
+                        window.location.reload();
+                    } else {
+                        alert('서버 오류!')
+                    }
+                }
+            })
             reset_form()
-        }
-        function reset_form() {
-            $('#customer_name').val('')
-            $('#order_count').val(0)
-            $('#customer_addr').val('')
-            $('#customer_phone').val('')
         }
         function valid_form() {
             let alert_msg = ''
@@ -183,6 +203,23 @@
                 data: {},
                 success: function(response) {
                     $('#ex_rate').append(response[1]['rate'])
+                }
+            })
+            $('#order_body').empty()
+            // orderlist 불러오기
+            $.ajax({
+                type: 'GET',
+                url: '/orderlist',
+                data: {},
+                success: function(response) {
+                    let orderlist = response['orderlist']
+                    for(let i = 0; i < orderlist.length; i++){
+                        let customer_name = orderlist[i]['customer_name']
+                        let order_count = orderlist[i]['order_count']
+                        let customer_addr = orderlist[i]['customer_addr']
+                        let customer_phone = orderlist[i]['customer_phone']
+                        order_listing(customer_name, order_count, customer_addr, customer_phone)
+                    }
                 }
             })
 
