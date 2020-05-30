@@ -163,25 +163,30 @@
                 let customer_name = $('#customer_name').val()
                 if (customer_name == '') {
                     alert_msg='이름을 입력해주세요'
+                    $('#customer_name').focus()
                     break
                 }
                 let order_count = $('#order_count').val()
                 if (order_count == '0') {
                     alert_msg = '수량을 입력해주세요'
+                    $('#order_count').focus()
                     break
                 }
                 let customer_addr = $('#customer_addr').val()
                 if (customer_addr == '') {
                     alert_msg = '주소를 입력해주세요'
+                    $('#customer_addr').focus()
                     break
                 }
                 let customer_phone = $('#customer_phone').val()
                 var phone_rule = /^010-[0-9]{4}-[0-9]{4}$/
                 if (customer_phone == '') {
                     alert_msg = '연락처를 입력해주세요'
+                    $('#customer_phone').focus()
                     break
                 } else if (!phone_rule.test(customer_phone)) {
                     alert_msg = '010-0000-0000 형태로 입력해주세요'
+                    $('#customer_phone').focus()
                     break
                 }
                 valid_result = true
