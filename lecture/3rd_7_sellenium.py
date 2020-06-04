@@ -13,25 +13,18 @@ driver.get(url)
 
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-# stocks = driver.find_elements_by_css_selector('#contentarea > div.box_type_l > table.type_2 > tbody > tr')
 stocks = soup.select('#contentarea > div.box_type_l > table.type_2 > tbody > tr')
-#contentarea > div.box_type_l > table.type_2 > tbody > tr:nth-child(2) > td:nth-child(2)
 
-# print(stocks)
 for stock in stocks:
     a_tag = stock.select_one('td:nth-child(2) > a')
-    #contentarea > div.box_type_l > table.type_2 > tbody > tr:nth-child(2) > td:nth-child(2) > a
     if a_tag is not None:
         price = stock.select_one('td:nth-child(3)').text
-        #contentarea > div.box_type_l > table.type_2 > tbody > tr:nth-child(2) > td:nth-child(3)
         name = a_tag.text
-        # print(rank,title,star)
         row = {
             'name': name,
             'price': price
         }
         print(name, price)
-        # db.stocks.insert_one(row)
         
 
 driver.quit()
