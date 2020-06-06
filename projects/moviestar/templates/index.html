@@ -94,11 +94,10 @@
           $.ajax({
               type: 'POST',
               url:  '/api/like',
-              data: {},
+              data: {'name_give':name},
               success: function (response) {
                   if (response['result'] == 'success') {
-										let msg = response['msg'];
-										alert(msg);
+										show_star()
                   }
               }
           });
