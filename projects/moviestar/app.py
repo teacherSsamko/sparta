@@ -16,7 +16,7 @@ def home():
 @app.route('/api/list', methods=['GET'])
 def stars_list():
     # 1. mystar 목록 전체를 검색합니다. ID는 제외하고 like 가 많은 순으로 정렬합니다.
-    stars = list(db.mystar.find({}, {'_id':0}).sort('like', -1))
+    stars = list(db.mystar.find({}, {'_id':0}).sort('like',-1))
     # 참고) find({},{'_id':False}), sort()를 활용하면 굿!
     # 2. 성공하면 success 메시지와 함께 stars_list 목록을 클라이언트에 전달합니다.
 
@@ -41,9 +41,11 @@ def star_like():
 @app.route('/api/delete', methods=['POST'])
 def star_delete():
     # 1. 클라이언트가 전달한 name_give를 name_receive 변수에 넣습니다.
+    name_recieve = request.form['name_give']
     # 2. mystar 목록에서 delete_one으로 name이 name_receive와 일치하는 star를 제거합니다.
+    db.mystar.delete_one({'name':name_recieve})
     # 3. 성공하면 success 메시지를 반환합니다.
-	return jsonify({'result': 'success','msg':'delete 연결되었습니다!'})
+    return jsonify({'result': 'success','msg':'delete 연결되었습니다!'})
 
 
 
